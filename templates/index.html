@@ -80,6 +80,16 @@
             border-radius: 10px;
             font-weight: 600;
         }
+
+        /* API Key 관리 모달 */
+        .api-key-input {
+            font-family: monospace;
+            letter-spacing: 0.5px;
+        }
+        
+        .eye-toggle {
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -101,7 +111,7 @@
                         <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">
                             <i class="fas fa-sign-in-alt me-2"></i>로그인
                         </a></li>
-                        <li><a class="dropdown-item" href="#">
+                        <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#apiKeyModal">
                             <i class="fas fa-key me-2"></i>API Key 관리
                         </a></li>
                     </ul>
@@ -162,6 +172,47 @@
         </div>
     </div>
 
+    <!-- API Key 관리 모달 -->
+    <div class="modal fade" id="apiKeyModal" tabindex="-1" aria-labelledby="apiKeyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="apiKeyModalLabel">업비트 API Key 관리</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>업비트 API 키는 암호화되어 안전하게 저장됩니다.
+                    </div>
+                    <form id="apiKeyForm">
+                        <div class="mb-3">
+                            <label for="accessKey" class="form-label">Access Key</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control api-key-input" id="accessKey" placeholder="Access Key 입력" required>
+                                <span class="input-group-text eye-toggle" id="toggleAccessKey">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="secretKey" class="form-label">Secret Key</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control api-key-input" id="secretKey" placeholder="Secret Key 입력" required>
+                                <span class="input-group-text eye-toggle" id="toggleSecretKey">
+                                    <i class="fas fa-eye"></i>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">API Key 저장</button>
+                            <button type="button" class="btn btn-outline-danger" id="deleteApiKey">API Key 삭제</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- 부트스트랩 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
@@ -173,7 +224,7 @@
             const password = document.getElementById('password').value;
             
             // 로그인 API 호출
-            fetch('/api/login', {
+            fetch('/api/auth/login', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -197,6 +248,139 @@
             .catch(error => {
                 alert('로그인 오류: ' + error.message);
             });
+        });
+        
+        // API Key 폼 제출 처리
+        document.getElementById('apiKeyForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const accessKey = document.getElementById('accessKey').value;
+            const secretKey = document.getElementById('secretKey').value;
+            
+            // API Key 저장 API 호출
+            fetch('/api/user/apikey', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    access_key: accessKey,
+                    secret_key: secretKey
+                })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('API Key 저장에 실패했습니다');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // 저장 성공 시 모달 닫기
+                alert('API Key가 성공적으로 저장되었습니다!');
+                document.getElementById('apiKeyModal').querySelector('.btn-close').click();
+            })
+            .catch(error => {
+                alert('API Key 저장 오류: ' + error.message);
+            });
+        });
+
+        // API Key 삭제 처리
+        document.getElementById('deleteApiKey').addEventListener('click', function() {
+            if (confirm('정말로 API Key를 삭제하시겠습니까?')) {
+                // API Key 삭제 API 호출
+                fetch('/api/user/apikey', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('API Key 삭제에 실패했습니다');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 삭제 성공 시 입력 필드 초기화 및 모달 닫기
+                    document.getElementById('accessKey').value = '';
+                    document.getElementById('secretKey').value = '';
+                    alert('API Key가 성공적으로 삭제되었습니다!');
+                    document.getElementById('apiKeyModal').querySelector('.btn-close').click();
+                })
+                .catch(error => {
+                    alert('API Key 삭제 오류: ' + error.message);
+                });
+            }
+        });
+
+        // API Key 조회 처리 (모달 열릴 때)
+        document.getElementById('apiKeyModal').addEventListener('show.bs.modal', function() {
+            // API Key 조회 API 호출
+            fetch('/api/user/apikey', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            })
+            .then(response => {
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        // API Key가 없는 경우 - 정상적인 상황
+                        return { has_keys: false };
+                    }
+                    throw new Error('API Key 조회에 실패했습니다');
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.has_keys) {
+                    // API Key가 있는 경우 - 필드에 값 채우기 (실제 값 대신 마스킹)
+                    document.getElementById('accessKey').value = '••••••••••••••••••••••••••';
+                    document.getElementById('secretKey').value = '••••••••••••••••••••••••••';
+                    // 삭제 버튼 활성화
+                    document.getElementById('deleteApiKey').disabled = false;
+                } else {
+                    // API Key가 없는 경우 - 필드 비우기
+                    document.getElementById('accessKey').value = '';
+                    document.getElementById('secretKey').value = '';
+                    // 삭제 버튼 비활성화
+                    document.getElementById('deleteApiKey').disabled = true;
+                }
+            })
+            .catch(error => {
+                console.error('API Key 조회 오류:', error);
+            });
+        });
+
+        // API Key 표시/숨김 토글
+        document.getElementById('toggleAccessKey').addEventListener('click', function() {
+            const accessKeyInput = document.getElementById('accessKey');
+            const icon = this.querySelector('i');
+            
+            if (accessKeyInput.type === 'password') {
+                accessKeyInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                accessKeyInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        document.getElementById('toggleSecretKey').addEventListener('click', function() {
+            const secretKeyInput = document.getElementById('secretKey');
+            const icon = this.querySelector('i');
+            
+            if (secretKeyInput.type === 'password') {
+                secretKeyInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                secretKeyInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
         });
         
         // 회원가입 링크 클릭 시 처리

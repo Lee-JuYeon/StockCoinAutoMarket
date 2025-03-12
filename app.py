@@ -3,6 +3,7 @@ import os
 import logging
 
 from routes.ui.routes_auth import auth_bp
+from routes.settings.routes_settings import settings_bp
 from utils.manager_selenium.manager_selenium import SeleniumManager
 
 seleniumManager = SeleniumManager()
@@ -16,9 +17,12 @@ logger = logging.getLogger(__name__)
 
 # Flask 앱 초기화
 app = Flask(__name__, static_folder='static')
+app.config.from_object('config.Config')  # 설정 로드
+
 
 # Blueprint 등록
 app.register_blueprint(auth_bp)
+app.register_blueprint(settings_bp)
 
 
 @app.route('/')
@@ -46,17 +50,17 @@ if __name__ == '__main__':
         # 브라우저에 알림 표시
         seleniumManager.driver.execute_script("alert('업비트 로그인이 필요합니다.');")
     
-    # 로그인 상태 확인 (isLogin 메서드 호출)
-    is_logged_in = seleniumManager.isLogin()
+    # # 로그인 상태 확인 (isLogin 메서드 호출)
+    # is_logged_in = seleniumManager.isLogin()
     
-    # match-case로 로그인 상태에 따라 처리
-    match is_logged_in:
-        case True:
-            when_logged_in()
-        case False:
-            when_not_logged_in()
-        case _:
-            when_not_logged_in()
+    # # match-case로 로그인 상태에 따라 처리
+    # match is_logged_in:
+    #     case True:
+    #         when_logged_in()
+    #     case False:
+    #         when_not_logged_in()
+    #     case _:
+    #         when_not_logged_in()
   
     # 그런 다음 Flask 실행
     app.run(host='0.0.0.0', port=7100, debug=True)
