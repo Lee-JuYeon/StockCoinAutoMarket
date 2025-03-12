@@ -1,0 +1,21 @@
+2025-03-12 10:09:33,104 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 10:09:33,166 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7100
+ * Running on http://172.30.1.22:7100
+2025-03-12 10:09:33,167 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 10:09:33,169 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 10:09:33,638 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 10:09:33,673 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 10:09:33,677 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 10:09:36,310 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:09:36] "GET / HTTP/1.1" 200 -
+2025-03-12 10:09:36,481 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:09:36] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:09:40,462 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:09:40] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:09:59,465 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:09:59] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:09:59,473 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:09:59] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:10:03,363 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:10:03] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:10:14,210 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:10:14] "DELETE /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:11:01,529 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:01] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 10:11:09,208 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:09] "GET / HTTP/1.1" 200 -
+2025-03-12 10:11:09,229 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:09] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:11:10,992 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:10] "GET /api/apikey HTTP/1.1" 200 -
