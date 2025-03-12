@@ -98,7 +98,7 @@
         /* API Key 리스트 스타일 */
         .api-key-list {
             margin-top: 20px;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
         }
         
@@ -106,38 +106,85 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px;
-            margin-bottom: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
             background-color: #f8f9fa;
-            border-radius: 6px;
+            border-radius: 8px;
             border: 1px solid #dee2e6;
+            transition: all 0.2s ease;
+        }
+        
+        .api-key-item:hover {
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         .api-key-info {
+            display: flex;
+            flex-direction: column;
             flex-grow: 1;
             font-family: monospace;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
         }
         
         .api-key-name {
-            font-weight: bold;
-            color: #0d6efd;
+            font-weight: 600;
+            color: #212529;
+            margin-bottom: 3px;
         }
         
         .api-key-masked {
             color: #6c757d;
+            font-size: 0.85rem;
         }
         
         .delete-key-btn {
             color: #dc3545;
             cursor: pointer;
-            padding: 5px;
+            padding: 8px;
             border-radius: 4px;
             transition: background-color 0.3s;
         }
         
         .delete-key-btn:hover {
             background-color: #ffe5e5;
+        }
+        
+        /* API 제공자 배지 스타일 */
+        .provider-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            margin-bottom: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fff;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+        
+        /* 각 API 제공자별 배지 색상 */
+        .provider-upbit {
+            background-color: #0062df;
+        }
+        
+        .provider-koreainvestment {
+            background-color: #f37021;
+        }
+        
+        .provider-binance {
+            background-color: #f0b90b;
+            color: #212529;
+        }
+        
+        .provider-coinbase {
+            background-color: #0052ff;
+        }
+        
+        .provider-kraken {
+            background-color: #5741d9;
+        }
+        
+        .provider-other {
+            background-color: #6c757d;
         }
     </style>
 </head>
@@ -191,17 +238,33 @@
 
     <!-- API Key 관리 모달 -->
     <div class="modal fade" id="apiKeyModal" tabindex="-1" aria-labelledby="apiKeyModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="apiKeyModalLabel">업비트 API Key 관리</h5>
+                    <h5 class="modal-title" id="apiKeyModalLabel">API Key 관리</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="alert alert-info">
-                        <i class="fas fa-info-circle me-2"></i>업비트 API 키는 암호화되어 안전하게 저장됩니다.
+                        <i class="fas fa-info-circle me-2"></i>API 키는 암호화되어 안전하게 저장됩니다.
                     </div>
                     <form id="apiKeyForm">
+                        <div class="mb-3">
+                            <label for="apiProvider" class="form-label">API 제공자</label>
+                            <select class="form-select" id="apiProvider" required>
+                                <option value="" selected disabled>API 제공자 선택</option>
+                                <option value="upbit">업비트</option>
+                                <option value="koreainvestment">한국투자증권</option>
+                                <option value="binance">바이낸스</option>
+                                <option value="coinbase">코인베이스</option>
+                                <option value="kraken">크라켄</option>
+                                <option value="other">기타</option>
+                            </select>
+                        </div>
+                        <div class="mb-3" id="otherProviderContainer" style="display: none;">
+                            <label for="otherProvider" class="form-label">직접 입력</label>
+                            <input type="text" class="form-control" id="otherProvider" placeholder="API 제공자 이름 입력">
+                        </div>
                         <div class="mb-3">
                             <label for="accessKey" class="form-label">Access Key</label>
                             <div class="input-group">
@@ -250,6 +313,7 @@
     <template id="apiKeyItemTemplate">
         <div class="api-key-item" data-key-id="">
             <div class="api-key-info">
+                <div class="provider-badge"></div>
                 <div class="api-key-name">Access Key:</div>
                 <div class="api-key-masked">••••••••••••••••••</div>
             </div>
@@ -266,6 +330,78 @@
         document.addEventListener('DOMContentLoaded', function() {
             checkApiKeyStatus();
             loadApiKeyList();
+            
+            // API 제공자 선택 이벤트
+            document.getElementById('apiProvider').addEventListener('change', function() {
+                const otherProviderContainer = document.getElementById('otherProviderContainer');
+                if (this.value === 'other') {
+                    otherProviderContainer.style.display = 'block';
+                    document.getElementById('otherProvider').setAttribute('required', 'required');
+                } else {
+                    otherProviderContainer.style.display = 'none';
+                    document.getElementById('otherProvider').removeAttribute('required');
+                }
+            });
+            
+            // API Key 폼 제출 처리
+            document.getElementById('apiKeyForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const providerSelect = document.getElementById('apiProvider');
+                const otherProviderInput = document.getElementById('otherProvider');
+                const accessKey = document.getElementById('accessKey').value;
+                const secretKey = document.getElementById('secretKey').value;
+                
+                // API 제공자 결정 (other 선택시 직접 입력한 값 사용)
+                let provider = providerSelect.value;
+                if (provider === 'other') {
+                    provider = otherProviderInput.value;
+                    if (!provider.trim()) {
+                        showAlert('API 제공자를 입력해주세요.', 'warning');
+                        return;
+                    }
+                }
+                
+                // API Key 저장 API 호출
+                fetch('/api/apikey', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        provider: provider,
+                        access_key: accessKey,
+                        secret_key: secretKey
+                    })
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'API Key 저장에 실패했습니다');
+                        });
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // 저장 성공 시 초기화
+                    showAlert('API Key가 성공적으로 저장되었습니다!', 'success');
+                    
+                    // 폼 초기화
+                    document.getElementById('apiProvider').value = '';
+                    document.getElementById('otherProvider').value = '';
+                    document.getElementById('accessKey').value = '';
+                    document.getElementById('secretKey').value = '';
+                    
+                    // API Key 목록 다시 로드
+                    loadApiKeyList();
+                    
+                    // API Key 상태 업데이트
+                    checkApiKeyStatus();
+                })
+                .catch(error => {
+                    showAlert(error.message, 'danger');
+                });
+            });
         });
         
         // API Key 상태 확인
@@ -313,7 +449,7 @@
                     
                     // 각 API Key에 대해 아이템 생성
                     data.keys.forEach(key => {
-                        const keyItem = createApiKeyItem(key.id, key.access_key_masked);
+                        const keyItem = createApiKeyItem(key.id, key.provider, key.access_key_masked);
                         container.appendChild(keyItem);
                     });
                 } else {
@@ -328,13 +464,19 @@
         }
         
         // API Key 아이템 생성
-        function createApiKeyItem(keyId, accessKeyMasked) {
+        function createApiKeyItem(keyId, provider, accessKeyMasked) {
             const template = document.getElementById('apiKeyItemTemplate');
             const clone = document.importNode(template.content, true);
             
             const item = clone.querySelector('.api-key-item');
             item.dataset.keyId = keyId;
             
+            // 공급자 배지 설정
+            const providerBadge = clone.querySelector('.provider-badge');
+            providerBadge.textContent = getProviderDisplayName(provider);
+            providerBadge.classList.add(`provider-${provider.toLowerCase()}`);
+            
+            // 마스킹된 액세스 키 설정
             const maskedText = clone.querySelector('.api-key-masked');
             maskedText.textContent = accessKeyMasked || '••••••••••••••••••';
             
@@ -345,6 +487,20 @@
             });
             
             return clone;
+        }
+        
+        // API 제공자 표시 이름 가져오기
+        function getProviderDisplayName(provider) {
+            const providers = {
+                'upbit': '업비트',
+                'koreainvestment': '한국투자증권',
+                'binance': '바이낸스',
+                'coinbase': '코인베이스',
+                'kraken': '크라켄',
+                'other': '기타'
+            };
+            
+            return providers[provider.toLowerCase()] || provider;
         }
         
         // 개별 API Key 삭제
@@ -379,6 +535,43 @@
             }
         }
         
+        // API Key 조회 처리 (모달 열릴 때)
+        document.getElementById('apiKeyModal').addEventListener('show.bs.modal', function() {
+            // API Key 목록 로드
+            loadApiKeyList();
+        });
+        
+        // API Key 표시/숨김 토글
+        document.getElementById('toggleAccessKey').addEventListener('click', function() {
+            const accessKeyInput = document.getElementById('accessKey');
+            const icon = this.querySelector('i');
+            
+            if (accessKeyInput.type === 'password') {
+                accessKeyInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                accessKeyInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
+        document.getElementById('toggleSecretKey').addEventListener('click', function() {
+            const secretKeyInput = document.getElementById('secretKey');
+            const icon = this.querySelector('i');
+            
+            if (secretKeyInput.type === 'password') {
+                secretKeyInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                secretKeyInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+        
         // 알림 메시지 표시 함수
         function showAlert(message, type = 'success') {
             const alertElement = document.getElementById('alertMessage');
@@ -398,88 +591,6 @@
                 alertElement.style.display = 'none';
             }, 3000);
         }
-        
-        // API Key 폼 제출 처리
-        document.getElementById('apiKeyForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            const accessKey = document.getElementById('accessKey').value;
-            const secretKey = document.getElementById('secretKey').value;
-            
-            // API Key 저장 API 호출
-            fetch('/api/apikey', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    access_key: accessKey,
-                    secret_key: secretKey
-                })
-            })
-            .then(response => {
-                if (!response.ok) {
-                    return response.json().then(data => {
-                        throw new Error(data.error || 'API Key 저장에 실패했습니다');
-                    });
-                }
-                return response.json();
-            })
-            .then(data => {
-                // 저장 성공 시 모달 닫기
-                showAlert('API Key가 성공적으로 저장되었습니다!', 'success');
-                
-                // 폼 초기화
-                document.getElementById('accessKey').value = '';
-                document.getElementById('secretKey').value = '';
-                
-                // API Key 목록 다시 로드
-                loadApiKeyList();
-                
-                // API Key 상태 업데이트
-                checkApiKeyStatus();
-            })
-            .catch(error => {
-                showAlert(error.message, 'danger');
-            });
-        });
-
-        // API Key 조회 처리 (모달 열릴 때)
-        document.getElementById('apiKeyModal').addEventListener('show.bs.modal', function() {
-            // API Key 목록 로드
-            loadApiKeyList();
-        });
-
-        // API Key 표시/숨김 토글
-        document.getElementById('toggleAccessKey').addEventListener('click', function() {
-            const accessKeyInput = document.getElementById('accessKey');
-            const icon = this.querySelector('i');
-            
-            if (accessKeyInput.type === 'password') {
-                accessKeyInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                accessKeyInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
-
-        document.getElementById('toggleSecretKey').addEventListener('click', function() {
-            const secretKeyInput = document.getElementById('secretKey');
-            const icon = this.querySelector('i');
-            
-            if (secretKeyInput.type === 'password') {
-                secretKeyInput.type = 'text';
-                icon.classList.remove('fa-eye');
-                icon.classList.add('fa-eye-slash');
-            } else {
-                secretKeyInput.type = 'password';
-                icon.classList.remove('fa-eye-slash');
-                icon.classList.add('fa-eye');
-            }
-        });
         
         // 자동 매매 시작 전 API Key 확인
         function checkApiKeyBeforeStart() {

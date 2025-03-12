@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, send_from_directory
 import os
 import logging
 from routes.settings.routes_apikey import api_key_bp
@@ -28,6 +28,42 @@ def create_app():
     # Blueprint 등록
     app.register_blueprint(api_key_bp)
     
+    # 템플릿 디렉토리 생성 확인
+    if not os.path.exists('templates'):
+        os.makedirs('templates')
+        logger.info("templates 디렉토리가 생성되었습니다.")
+    
+    # 오류 페이지 템플릿 생성 확인
+    error_templates = {
+        '404.html': '페이지를 찾을 수 없습니다.',
+        '500.html': '서버 내부 오류가 발생했습니다.'
+    }
+    
+    for template, message in error_templates.items():
+        template_path = os.path.join('templates', template)
+        if not os.path.exists(template_path):
+            # 기본 오류 템플릿 생성
+            with open(template_path, 'w', encoding='utf-8') as f:
+                f.write(f'''<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{message}</title>
+    <style>
+        body {{ font-family: Arial, sans-serif; text-align: center; padding: 50px; }}
+        h1 {{ color: #333; }}
+        .message {{ color: #666; margin: 20px 0; }}
+        .home-link {{ display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }}
+    </style>
+</head>
+<body>
+    <h1>{template.split('.')[0]}</h1>
+    <div class="message">{message}</div>
+    <a href="/" class="home-link">홈으로 돌아가기</a>
+</body>
+</html>''')
+            logger.info(f"{template} 템플릿이 생성되었습니다.")
+    
     # 라우트 설정
     @app.route('/')
     def index():
@@ -36,6 +72,14 @@ def create_app():
     @app.route('/dashboard')
     def dashboard():
         return render_template('dashboard.html')
+    
+    # 정적 파일 추가 경로 설정
+    @app.route('/favicon.ico')
+    def favicon():
+        return send_from_directory(
+            os.path.join(app.root_path, 'static'),
+            'favicon.ico', mimetype='image/vnd.microsoft.icon'
+        )
     
     # 에러 핸들러 등록
     @app.errorhandler(404)

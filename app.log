@@ -89,3 +89,86 @@
 2025-03-12 10:31:53,115 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:31:53] "DELETE /api/apikey/2 HTTP/1.1" 200 -
 2025-03-12 10:31:53,126 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:31:53] "GET /api/apikey/list HTTP/1.1" 200 -
 2025-03-12 10:31:53,126 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:31:53] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:33:06,261 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 10:33:06,311 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7100
+ * Running on http://172.30.1.22:7100
+2025-03-12 10:33:06,312 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 10:33:06,315 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 10:33:06,714 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 10:33:06,745 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 10:33:06,750 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 10:33:09,656 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:09] "GET / HTTP/1.1" 200 -
+2025-03-12 10:33:09,721 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:09] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:33:09,721 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:09] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:33:11,573 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:11] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:33:14,836 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:14] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 10:33:16,899 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:16] "GET / HTTP/1.1" 200 -
+2025-03-12 10:33:16,945 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:16] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:33:16,947 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:16] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:33:22,833 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:33:22] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:35:06,607 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:35:06] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:39:19,537 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:39:19] "GET /dashboard HTTP/1.1" 200 -
+2025-03-12 10:57:09,732 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:57:09] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-12 11:33:43,975 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\routes\\settings\\routes_apikey.py', reloading
+2025-03-12 11:33:44,034 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:33:47,497 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:33:47,598 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7100
+ * Running on http://172.30.1.22:7100
+2025-03-12 11:33:47,599 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 11:33:47,602 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:33:48,153 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:33:48,195 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:33:48,202 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:33:53,612 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:33:53] "GET / HTTP/1.1" 200 -
+2025-03-12 11:33:53,634 - routes.settings.routes_apikey - ERROR - API Key ¡∂»∏ ¡ﬂ ø¿∑˘ πﬂª˝: ApiKeyService.get_api_keys() takes 1 positional argument but 2 were given
+2025-03-12 11:33:53,635 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:33:53] "[35m[1mGET /api/apikey HTTP/1.1[0m" 500 -
+2025-03-12 11:33:53,636 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:33:53] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 11:33:53,675 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:33:53] "[35m[1mGET /favicon.ico HTTP/1.1[0m" 500 -
+2025-03-12 11:35:22,178 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\service\\service_apikey.py', reloading
+2025-03-12 11:35:22,260 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:35:22,878 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:35:22,929 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:35:22,936 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:35:49,526 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\repository\\repository_apikey.py', reloading
+2025-03-12 11:35:49,607 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:35:50,392 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:35:50,443 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:35:50,449 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:37:24,332 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\app.py', reloading
+2025-03-12 11:37:24,392 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:37:24,965 - __main__ - INFO - 404.html ≈€«√∏¥¿Ã ª˝º∫µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:37:24,968 - __main__ - INFO - 500.html ≈€«√∏¥¿Ã ª˝º∫µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:37:24,972 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:37:25,029 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:37:25,037 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:43:24,136 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:43:24] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 11:45:39,687 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\routes\\settings\\routes_apikey.py', reloading
+2025-03-12 11:45:39,783 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:45:40,394 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:45:40,445 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:45:40,462 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:46:36,739 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\service\\service_apikey.py', reloading
+2025-03-12 11:46:36,814 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:46:37,558 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:46:37,597 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:46:37,604 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:47:34,789 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\πŸ≈¡ »≠∏È\\StockCoinAutoMarket\\repository\\repository_apikey.py', reloading
+2025-03-12 11:47:34,865 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 11:47:35,556 - __main__ - INFO - æ÷«√∏Æƒ…¿Ãº«¿Ã Ω√¿€µ«æ˙Ω¿¥œ¥Ÿ.
+2025-03-12 11:47:35,595 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 11:47:35,602 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 11:48:12,366 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:12] "GET / HTTP/1.1" 200 -
+2025-03-12 11:48:12,395 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:12] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 11:48:12,395 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:12] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 11:48:12,407 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:12] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-03-12 11:48:14,236 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:14] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 11:48:24,092 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:24] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 11:48:24,102 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:24] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 11:48:24,110 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:24] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 11:48:35,609 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:35] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 11:48:35,618 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:35] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 11:48:35,629 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 11:48:35] "GET /api/apikey/list HTTP/1.1" 200 -
