@@ -108,3 +108,72 @@ class ApiKeyRepository:
         except Exception as e:
             logger.error(f"API Key 삭제 중 오류 발생: {e}")
             return False, f"API Key 삭제 중 오류가 발생했습니다: {str(e)}"
+            
+    def get_api_key_list(self):
+        """
+        API Key 목록 조회
+        
+        Returns:
+            list: API Key 정보 목록
+        """
+        try:
+            query = """
+            SELECT id, access_key, created_at 
+            FROM api_keys 
+            ORDER BY created_at DESC
+            """
+            result = self.db_manager.execute_select(query)
+            
+            if not result:
+                return []
+            
+            api_keys = []
+            for row in result:
+                # 암호화된 API Key 복호화
+                access_key = self.encryption_manager.decrypt(row[1]) if row[1] else None
+                
+                api_keys.append({
+                    "id": row[0],
+                    "access_key": access_key,
+                    "created_at": row[2]
+                })
+                    
+            return api_keys
+                    
+        except Exception as e:
+            logger.error(f"API Key 목록 조회 중 오류 발생: {e}")
+            return []
+        
+    def delete_specific_api_key(self, key_id):
+        """
+        특정 API Key 삭제
+        
+        Args:
+            key_id (int): 삭제할 API Key ID
+            
+        Returns:
+            tuple: (성공 여부, 메시지)
+        """
+        try:
+            if not key_id:
+                return False, "API Key ID는 필수입니다."
+            
+            # API Key 존재 여부 확인
+            check_query = "SELECT COUNT(*) FROM api_keys WHERE id = ?"
+            result = self.db_manager.execute_select_one(check_query, (key_id,))
+            
+            if not result or result[0] == 0:
+                return False, "해당 API Key를 찾을 수 없습니다."
+                
+            # API Key 삭제
+            query = "DELETE FROM api_keys WHERE id = ?"
+            success = self.db_manager.execute_query(query, (key_id,))
+            
+            if success:
+                return True, "API Key가 성공적으로 삭제되었습니다."
+            else:
+                return False, "API Key 삭제에 실패했습니다."
+                    
+        except Exception as e:
+            logger.error(f"특정 API Key 삭제 중 오류 발생: {e}")
+            return False, f"API Key 삭제 중 오류가 발생했습니다: {str(e)}"

@@ -19,3 +19,50 @@
 2025-03-12 10:11:09,208 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:09] "GET / HTTP/1.1" 200 -
 2025-03-12 10:11:09,229 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:09] "GET /api/apikey HTTP/1.1" 200 -
 2025-03-12 10:11:10,992 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:11:10] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:25:17,945 - __main__ - INFO - ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù.
+2025-03-12 10:25:17,995 - werkzeug - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:7100
+ * Running on http://172.30.1.22:7100
+2025-03-12 10:25:17,996 - werkzeug - INFO - [33mPress CTRL+C to quit[0m
+2025-03-12 10:25:17,999 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 10:25:18,407 - __main__ - INFO - ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù.
+2025-03-12 10:25:18,443 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 10:25:18,448 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 10:25:21,593 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:21] "GET / HTTP/1.1" 200 -
+2025-03-12 10:25:21,623 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:21,624 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:21] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:21,627 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:21] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:25:23,572 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:23,573 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:23] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:29,193 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:29] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:25:29,199 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:29,201 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:29] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:29,203 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:29] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:25:33,063 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:33,064 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:33] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:40,385 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:40,386 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:40] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:50,770 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:50] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:25:50,776 - routes.settings.routes_apikey - ERROR - API Key ¸ñ·Ï Á¶È¸ Áß ¿À·ù ¹ß»ý: 'ApiKeyService' object has no attribute 'get_api_key_list'
+2025-03-12 10:25:50,777 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:50] "[35m[1mGET /api/apikey/list HTTP/1.1[0m" 500 -
+2025-03-12 10:25:50,784 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:25:50] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:26:13,356 - werkzeug - INFO -  * Detected change in 'C:\\Users\\work23\\OneDrive\\¹ÙÅÁ È­¸é\\StockCoinAutoMarket\\service\\service_apikey.py', reloading
+2025-03-12 10:26:13,412 - werkzeug - INFO -  * Restarting with stat
+2025-03-12 10:26:13,858 - __main__ - INFO - ¾ÖÇÃ¸®ÄÉÀÌ¼ÇÀÌ ½ÃÀÛµÇ¾ú½À´Ï´Ù.
+2025-03-12 10:26:13,891 - werkzeug - WARNING -  * Debugger is active!
+2025-03-12 10:26:13,896 - werkzeug - INFO -  * Debugger PIN: 121-723-546
+2025-03-12 10:26:16,878 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:16] "GET / HTTP/1.1" 200 -
+2025-03-12 10:26:16,902 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:16] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:26:16,904 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:16] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:26:18,243 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:18] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:26:30,554 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:30] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:26:30,562 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:30] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:26:30,566 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:30] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:26:50,100 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:26:50] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:27:00,286 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:27:00] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:27:00,298 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:27:00] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:27:00,304 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:27:00] "GET /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:28:33,356 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:28:33] "POST /api/apikey HTTP/1.1" 200 -
+2025-03-12 10:28:33,364 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:28:33] "GET /api/apikey/list HTTP/1.1" 200 -
+2025-03-12 10:28:33,367 - werkzeug - INFO - 127.0.0.1 - - [12/Mar/2025 10:28:33] "GET /api/apikey HTTP/1.1" 200 -

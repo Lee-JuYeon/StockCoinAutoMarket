@@ -55,3 +55,38 @@ def delete_api_key():
     except Exception as e:
         logger.error(f"API Key 삭제 중 오류 발생: {e}")
         return jsonify({"error": "API Key 삭제 중 오류가 발생했습니다."}), 500
+    
+
+
+
+# API Key 목록 조회 API
+@api_key_bp.route('/list', methods=['GET'])
+def get_api_key_list():
+    """API Key 목록 조회 API"""
+    try:
+        # 서비스 계층에 목록 조회 메서드 추가 필요
+        # 실제 구현에서는 service_apikey.py에 get_api_key_list 메서드 추가 필요
+        result = api_key_service.get_api_key_list()
+        return jsonify(result)
+            
+    except Exception as e:
+        logger.error(f"API Key 목록 조회 중 오류 발생: {e}")
+        return jsonify({"error": "API Key 목록 조회 중 오류가 발생했습니다."}), 500
+
+# 개별 API Key 삭제 API
+@api_key_bp.route('/<int:key_id>', methods=['DELETE'])
+def delete_specific_api_key(key_id):
+    """특정 API Key 삭제 API"""
+    try:
+        # 서비스 계층에 특정 키 삭제 메서드 추가 필요
+        # 실제 구현에서는 service_apikey.py에 delete_specific_api_key 메서드 추가 필요
+        success, message = api_key_service.delete_specific_api_key(key_id)
+        
+        if success:
+            return jsonify({"message": message})
+        else:
+            return jsonify({"error": message}), 400
+            
+    except Exception as e:
+        logger.error(f"특정 API Key 삭제 중 오류 발생: {e}")
+        return jsonify({"error": f"API Key 삭제 중 오류가 발생했습니다: {str(e)}"}), 500
