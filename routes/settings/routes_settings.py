@@ -1,6 +1,5 @@
 from flask import Blueprint, request, jsonify, session
 from models.user import User, db
-from flask_login import login_required, current_user
 from werkzeug.security import generate_password_hash
 import logging
 from cryptography.fernet import Fernet

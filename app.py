@@ -1,66 +1,61 @@
-from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
+from flask import Flask, render_template
 import os
 import logging
+from routes.settings.routes_apikey import api_key_bp
+import sys
 
-from routes.ui.routes_auth import auth_bp
-from routes.settings.routes_settings import settings_bp
-from utils.manager_selenium.manager_selenium import SeleniumManager
-
-seleniumManager = SeleniumManager()
+# 필요한 디렉토리 추가
+app_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.append(app_dir)
 
 # 로깅 설정
 logging.basicConfig(
     level=logging.INFO,
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler("app.log"),
+        logging.StreamHandler()
+    ]
 )
 logger = logging.getLogger(__name__)
 
-# Flask 앱 초기화
-app = Flask(__name__, static_folder='static')
-app.config.from_object('config.Config')  # 설정 로드
+def create_app():
+    """Flask 애플리케이션 생성 및 설정"""
+    # Flask 앱 초기화
+    app = Flask(__name__, static_folder='static')
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev_secret_key')
+    
+    # Blueprint 등록
+    app.register_blueprint(api_key_bp)
+    
+    # 라우트 설정
+    @app.route('/')
+    def index():
+        return render_template('index.html')
+    
+    @app.route('/dashboard')
+    def dashboard():
+        return render_template('dashboard.html')
+    
+    # 에러 핸들러 등록
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template('404.html'), 404
+    
+    @app.errorhandler(500)
+    def internal_server_error(e):
+        logger.error(f"서버 오류 발생: {e}")
+        return render_template('500.html'), 500
+    
+    # 시작 메시지 로깅
+    logger.info("애플리케이션이 시작되었습니다.")
+    
+    return app
 
-
-# Blueprint 등록
-app.register_blueprint(auth_bp)
-app.register_blueprint(settings_bp)
-
-
-@app.route('/')
-def index():
-    return render_template('index.html')
-
+# 애플리케이션 실행
 if __name__ == '__main__':
+    app = create_app()
+    port = int(os.getenv('PORT', 7100))
+    debug = os.getenv('DEBUG', 'True') == 'True'
     
-
-     # 셀레니움 매니저 초기화
-    seleniumManager = SeleniumManager()
-    
-    # 로그인된 경우 처리 함수
-    def when_logged_in():
-        print("로그인이 확인되었습니다.")
-        # API 키 발급 진행
-        return seleniumManager.getUpBitApiKey()
-    
-    # 로그인 안 된 경우 처리 함수
-    def when_not_logged_in():
-        print("="*50)
-        print("업비트 로그인이 필요합니다.")
-        print("브라우저 창에서 로그인을. 완료한 후 다시 시도해주세요.")
-        print("="*50)
-        # 브라우저에 알림 표시
-        seleniumManager.driver.execute_script("alert('업비트 로그인이 필요합니다.');")
-    
-    # # 로그인 상태 확인 (isLogin 메서드 호출)
-    # is_logged_in = seleniumManager.isLogin()
-    
-    # # match-case로 로그인 상태에 따라 처리
-    # match is_logged_in:
-    #     case True:
-    #         when_logged_in()
-    #     case False:
-    #         when_not_logged_in()
-    #     case _:
-    #         when_not_logged_in()
-  
-    # 그런 다음 Flask 실행
-    app.run(host='0.0.0.0', port=7100, debug=True)
+    app.run(host='0.0.0.0', port=port, debug=debug)
