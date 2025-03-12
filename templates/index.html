@@ -230,9 +230,9 @@
                         <h6 class="mb-3">저장된 API Key 목록</h6>
                         <div id="apiKeyListContainer">
                             <!-- API Key 아이템들이 여기에 동적으로 추가됩니다 -->
-                            <div class="text-center text-muted py-3" id="noKeysMessage">
-                                저장된 API Key가 없습니다.
-                            </div>
+                        </div>
+                        <div class="text-center text-muted py-3" id="noKeysMessage">
+                            저장된 API Key가 없습니다.
                         </div>
                     </div>
                 </div>
@@ -318,7 +318,6 @@
                     });
                 } else {
                     // API Key가 없는 경우
-                    container.appendChild(noKeysMessage);
                     noKeysMessage.style.display = 'block';
                 }
             })
