@@ -1,8 +1,26 @@
-from flask import Flask, render_template, send_from_directory
+from flask import Flask, render_template, redirect, url_for, flash, request, jsonify
 import os
 import logging
-from routes.settings.routes_apikey import api_key_bp
+from datetime import datetime
 import sys
+from flask_login import LoginManager, login_required, current_user, login_user, logout_user
+from apscheduler.schedulers.background import BackgroundScheduler
+
+# 모델 가져오기
+from models.user import db, User
+from models.trade import Trade
+from models.recommendation import Recommendation
+
+# 라우트 가져오기
+from routes.ui.routes_auth import auth_bp
+from routes.settings.routes_apikey import api_key_bp
+from routes.settings.routes_settings import settings_bp
+
+# 서비스 가져오기
+from services.upbit_service import UpbitService
+from services.trading_service import TradingService
+from services.recommendation_service import RecommendationService
+from services.chart_service import ChartService
 
 # 필요한 디렉토리 추가
 app_dir = os.path.dirname(os.path.abspath(__file__))
@@ -23,46 +41,58 @@ def create_app():
     """Flask 애플리케이션 생성 및 설정"""
     # Flask 앱 초기화
     app = Flask(__name__, static_folder='static')
-    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev_secret_key')
+    app.config.from_object('config.Config')
+    
+    # 데이터베이스 초기화
+    db.init_app(app)
+    
+    # 로그인 매니저 설정
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+    login_manager.login_view = 'auth.login'
+    
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(int(user_id))
     
     # Blueprint 등록
+    app.register_blueprint(auth_bp)
     app.register_blueprint(api_key_bp)
+    app.register_blueprint(settings_bp)
     
-    # 템플릿 디렉토리 생성 확인
-    if not os.path.exists('templates'):
-        os.makedirs('templates')
-        logger.info("templates 디렉토리가 생성되었습니다.")
+    # 데이터베이스 생성
+    with app.app_context():
+        db.create_all()
     
-    # 오류 페이지 템플릿 생성 확인
-    error_templates = {
-        '404.html': '페이지를 찾을 수 없습니다.',
-        '500.html': '서버 내부 오류가 발생했습니다.'
-    }
+    # 스케줄러 설정
+    scheduler = BackgroundScheduler()
     
-    for template, message in error_templates.items():
-        template_path = os.path.join('templates', template)
-        if not os.path.exists(template_path):
-            # 기본 오류 템플릿 생성
-            with open(template_path, 'w', encoding='utf-8') as f:
-                f.write(f'''<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>{message}</title>
-    <style>
-        body {{ font-family: Arial, sans-serif; text-align: center; padding: 50px; }}
-        h1 {{ color: #333; }}
-        .message {{ color: #666; margin: 20px 0; }}
-        .home-link {{ display: inline-block; margin-top: 20px; color: #0066cc; text-decoration: none; }}
-    </style>
-</head>
-<body>
-    <h1>{template.split('.')[0]}</h1>
-    <div class="message">{message}</div>
-    <a href="/" class="home-link">홈으로 돌아가기</a>
-</body>
-</html>''')
-            logger.info(f"{template} 템플릿이 생성되었습니다.")
+    # 자동 매매 작업 스케줄링
+    @scheduler.scheduled_job('interval', minutes=5)
+    def run_auto_trading():
+        with app.app_context():
+            # 자동 매매가 활성화된 사용자 가져오기
+            users = User.query.filter_by(auto_trading_enabled=True).all()
+            for user in users:
+                # 각 사용자에 대한 자동 매매 실행
+                trading_service = TradingService(user)
+                result = trading_service.execute_auto_trading()
+                logger.info(f"자동 매매 결과 (사용자 {user.id}): {result}")
+    
+    # 추천 작업 스케줄링
+    @scheduler.scheduled_job('interval', minutes=30)
+    def run_recommendations():
+        with app.app_context():
+            # 사용자 가져오기
+            users = User.query.all()
+            for user in users:
+                # 각 사용자에 대한 추천 생성
+                recommendation_service = RecommendationService(user)
+                recommendations = recommendation_service.generate_recommendations()
+                logger.info(f"추천 생성 완료 (사용자 {user.id}): {len(recommendations)}개")
+    
+    # 스케줄러 시작
+    scheduler.start()
     
     # 라우트 설정
     @app.route('/')
@@ -70,16 +100,63 @@ def create_app():
         return render_template('index.html')
     
     @app.route('/dashboard')
+    @login_required
     def dashboard():
-        return render_template('dashboard.html')
-    
-    # 정적 파일 추가 경로 설정
-    @app.route('/favicon.ico')
-    def favicon():
-        return send_from_directory(
-            os.path.join(app.root_path, 'static'),
-            'favicon.ico', mimetype='image/vnd.microsoft.icon'
+        # 거래 서비스 초기화
+        trading_service = TradingService(current_user)
+        
+        # 사용자 잔액 조회
+        upbit_service = UpbitService()
+        if current_user.upbit_access_key and current_user.upbit_secret_key:
+            from utils.manager_encryption.manager_encryption import EncryptionManager
+            encryption_manager = EncryptionManager()
+            access_key = encryption_manager.decrypt(current_user.upbit_access_key)
+            secret_key = encryption_manager.decrypt(current_user.upbit_secret_key)
+            upbit_service.set_keys(access_key, secret_key, encrypt=False)
+            
+            balance_info = upbit_service.get_balance()
+        else:
+            balance_info = {"error": "API 키가 설정되지 않았습니다."}
+        
+        # 최근 거래 내역
+        recent_trades = trading_service.get_trade_history(user_id=current_user.id, limit=10)
+        
+        # 최근 추천
+        recent_recommendations = Recommendation.query.filter_by(
+            user_id=current_user.id,
+            status='pending'
+        ).order_by(Recommendation.timestamp.desc()).limit(5).all()
+        
+        return render_template(
+            'dashboard.html',
+            user=current_user,
+            balance_info=balance_info,
+            recent_trades=recent_trades,
+            recent_recommendations=recent_recommendations
         )
+    
+    @app.route('/history')
+    @login_required
+    def history():
+        # 거래 내역 조회
+        trading_service = TradingService(current_user)
+        trades = trading_service.get_trade_history(user_id=current_user.id, limit=50)
+        
+        return render_template('history.html', trades=trades)
+    
+    @app.route('/api/charts/ticker/<ticker>')
+    def get_ticker_chart_data(ticker):
+        """특정 코인의 차트 데이터 API"""
+        interval = request.args.get('interval', 'day')
+        count = int(request.args.get('count', 30))
+        
+        chart_service = ChartService()
+        data = chart_service.get_ohlcv_data(ticker, interval, count)
+        
+        if data is None:
+            return jsonify({"error": "데이터를 불러올 수 없습니다."}), 400
+            
+        return jsonify(data.to_dict('records'))
     
     # 에러 핸들러 등록
     @app.errorhandler(404)

@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from service.service_apikey import ApiKeyService
+from service.apikey.apikey_service import ApiKeyService
 import logging
 
 # 로깅 설정
