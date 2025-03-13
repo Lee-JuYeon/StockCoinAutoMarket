@@ -1,5 +1,5 @@
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from models.user import db
 from models.trade import Trade
 from service.upbit.upbit_service import UpbitService
@@ -27,8 +27,8 @@ class TradingService:
                 logger.error(f"업비트 서비스 초기화 실패: {e}")
                 self.upbit_service = None
     
+    # 거래 실행
     def execute_trade(self, ticker, trade_type, amount=None, price=None, strategy=None):
-        """거래 실행"""
         try:
             if self.upbit_service is None:
                 return {"error": "업비트 서비스가 초기화되지 않았습니다."}
@@ -106,8 +106,8 @@ class TradingService:
             logger.error(f"거래 실행 중 오류 발생: {e}")
             return {"error": str(e)}
     
+    # 거래 내역 조회
     def get_trade_history(self, user_id=None, limit=20):
-        """거래 내역 조회"""
         try:
             if user_id:
                 trades = Trade.query.filter_by(user_id=user_id).order_by(Trade.timestamp.desc()).limit(limit).all()
@@ -119,8 +119,8 @@ class TradingService:
             logger.error(f"거래 내역 조회 중 오류 발생: {e}")
             return []
     
+    # 자동 매매 실행
     def execute_auto_trading(self):
-        """자동 매매 실행"""
         try:
             if not self.user:
                 return {"error": "사용자 정보가 없습니다."}
@@ -241,8 +241,8 @@ class TradingService:
             logger.error(f"자동 매매 실행 중 오류 발생: {e}")
             return {"error": str(e)}
     
+    # 손익 계산
     def calculate_profit_loss(self, user_id=None):
-        """손익 계산"""
         try:
             if user_id is None and self.user:
                 user_id = self.user.id

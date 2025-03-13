@@ -1,6 +1,5 @@
 # StockCoinAutoMarket
 
-# 프로젝트 구조
 crypto_trading_web/
 │
 ├── app.py                      # 메인 Flask 애플리케이션
@@ -16,7 +15,8 @@ crypto_trading_web/
 │   ├── index.html              # 메인 페이지
 │   ├── dashboard.html          # 대시보드
 │   ├── settings.html           # 설정 페이지
-│   └── history.html            # 거래 내역 페이지
+│   ├── history.html            # 거래 내역 페이지
+│   └── strategy.html           # 매매 전략 설정 페이지 (추가)
 │
 ├── models/                     # 데이터베이스 모델
 │   ├── user.py                 # 사용자 모델
@@ -28,9 +28,27 @@ crypto_trading_web/
 │   ├── trading_service.py      # 매매 로직
 │   ├── recommendation_service.py # 추천 알고리즘
 │   ├── chart_service.py        # 차트 데이터 처리
-│   └── news_service.py         # 뉴스 분석 서비스
+│   ├── news_service.py         # 뉴스 분석 서비스
+│   └── alert_service.py        # 알림 서비스 (추가)
 │
-└── utils/                      # 유틸리티 함수
-    ├── indicators.py           # 기술적 지표 계산 (RSI 등)
-    ├── auth.py                 # 인증 관련 기능
-    └── database.py             # 데이터베이스 연결 관리
+├── utils/                      # 유틸리티 함수
+│   ├── indicators.py           # 기술적 지표 계산 (RSI 등)
+│   ├── auth.py                 # 인증 관련 기능
+│   ├── database.py             # 데이터베이스 연결 관리
+│   ├── manager_encryption/     # 암호화 관리 (기존)
+│   │   └── manager_encryption.py
+│   ├── manager_db/             # DB 관리 (기존)
+│   │   └── manager_db.py
+│   └── manager_trading_algorithm/ # 매매 알고리즘 관리 (기존)
+│       └── manager_trading_algorithm.py
+│
+└── routes/                     # API 라우트
+    ├── ui/                     # UI 관련 라우트
+    │   ├── routes_auth.py      # 인증 라우트
+    │   └── routes_dashboard.py # 대시보드 라우트 (추가)
+    ├── api/                    # API 관련 라우트 (추가)
+    │   ├── routes_upbit.py     # 업비트 API 라우트 (추가)
+    │   └── routes_trading.py   # 거래 API 라우트 (추가)
+    └── settings/               # 설정 관련 라우트
+        ├── routes_apikey.py    # API 키 라우트
+        └── routes_settings.py  # 설정 라우트
