@@ -39,9 +39,23 @@ crypto_trading_web/
 │   │   └── manager_encryption.py
 │   ├── manager_db/             # DB 관리 (기존)
 │   │   └── manager_db.py
-│   └── manager_trading_algorithm/ # 매매 알고리즘 관리 (기존)
-│       └── manager_trading_algorithm.py
-│
+│   ├── manager_trading_algorithm/ # 매매 알고리즘 관리 (기존)
+│   │   └── manager_trading_algorithm.py
+│   └── upbit_api/
+│       │
+│       ├── __init__.py               # 패키지 초기화 및 싱글톤 인스턴스 관리
+│       ├── upbit_api.py              # 메인 싱글톤 클래스, 각 모듈 통합
+│       ├── modules/                  # 기능별 모듈 디렉토리
+│       │   ├── __init__.py           # 모듈 패키지 초기화
+│       │   ├── accounts.py           # 자산/계좌 관련 모듈
+│       │   ├── orders.py             # 주문 관련 모듈
+│       │   ├── deposits.py           # 입금 관련 모듈
+│       │   ├── withdrawals.py        # 출금 관련 모듈
+│       │   └── service_info.py       # 서비스 정보 관련 모듈
+│       └── utils/                    # 유틸리티 함수
+│           ├── __init__.py
+│           ├── auth.py               # 인증 관련 유틸리티
+│           └── validators.py         # 데이터 유효성 검사 유틸리티
 └── routes/                     # API 라우트
     ├── ui/                     # UI 관련 라우트
     │   ├── routes_auth.py      # 인증 라우트
