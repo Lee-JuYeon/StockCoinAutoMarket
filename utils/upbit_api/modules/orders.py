@@ -218,6 +218,54 @@ class OrdersModule:
             return {"error": str(e)}
     
     # 종료된 주문 조회
+    def get_closed_orders(self, market=None, states=['done', 'cancel'], start_time=None, end_time=None, page=1, limit=100):
+        """
+        종료된 주문 조회
+        
+        Args:
+            market (str, optional): 마켓 코드 (예: KRW-BTC)
+            states (list, optional): 주문 상태. 기본값은 ['done', 'cancel']
+            start_time (str, optional): 조회 시작 시간 (ISO 8601 형식, 예: '2021-01-01T00:00:00+09:00')
+            end_time (str, optional): 조회 종료 시간 (ISO 8601 형식)
+            page (int, optional): 페이지 번호
+            limit (int, optional): 한 페이지에 가져올 주문 개수 (최대 100)
+            
+        Returns:
+            list: 종료된 주문 리스트
+        """
+        try:
+            # 쿼리 파라미터 설정
+            params = {
+                'states[]': states,
+                'page': page,
+                'limit': limit
+            }
+            
+            if market:
+                if not validate_ticker(market):
+                    return {"error": "유효하지 않은 마켓 코드입니다."}
+                params['market'] = market
+                
+            if start_time:
+                params['start_time'] = start_time
+                
+            if end_time:
+                params['end_time'] = end_time
+            
+            # 인증 헤더 생성
+            headers = self.api.get_auth_headers(params)
+            
+            # API 요청
+            response = requests.get(f"{self.server_url}/v1/orders", params=params, headers=headers)
+            
+            if response.status_code == 200:
+                return response.json()
+            else:
+                logger.error(f"종료된 주문 조회 실패: {response.text}")
+                return {"error": response.text}
+        except Exception as e:
+            logger.error(f"종료된 주문 조회 중 오류 발생: {e}")
+            return {"error": str(e)}
 
     # 주문 취소 접수
     def cancel_order(self, uuid_str):
