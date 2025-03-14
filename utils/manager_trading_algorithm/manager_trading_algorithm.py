@@ -188,4 +188,3 @@ class TradingAlgorithmManager:
             logger.error(f"MACD 계산 중 오류 발생: {e}")
             return np.zeros(len(prices)), np.zeros(len(prices)), np.zeros(len(prices))
     
-    def calculate_bollinger_bands(self, prices, window=20
