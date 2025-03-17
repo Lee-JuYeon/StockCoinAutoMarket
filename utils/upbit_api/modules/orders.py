@@ -1,10 +1,3 @@
-"""
-업비트 API 주문 관련 모듈
-- 주문 가능 정보
-- 개별 주문 조회
-- 주문 리스트 조회
-- 주문 취소 및 매수/매도 기능
-"""
 import requests
 import logging
 from urllib.parse import urlencode, unquote
